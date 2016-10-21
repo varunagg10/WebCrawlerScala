@@ -7,8 +7,9 @@ import java.util.regex.{Matcher, Pattern}
 import com.pramati.crawler.downloader.api.DocumentDownloader
 import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
 import com.pramati.crawler.exceptions.BusinesssException
+import com.pramati.crawler.model.{DocumentContainer, MessageContainer}
 import com.pramati.crawler.service.facade.HandleCrawlFacade
-import com.pramati.crawler.utils.{FileIOHelper, UserInputHelper}
+import com.pramati.crawler.utils.{CustomEncodingHelper, FileIOHelper, UserInputHelper}
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper
 import org.apache.log4j.Logger
 import org.jsoup.nodes.{Document, Element}
@@ -25,7 +26,7 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
 
   @throws[BusinesssException]
   def parseMessagesLinkForDateFromDoc(date: Date, docCont: DocumentContainer): String = {
-    val doc: Document = docCont.getDoc
+    val doc: Document = docCont.doc
     val dt: String = sdf.format(date)
     val elements: Elements = doc.select(".date").select(":contains(" + dt + ")")
     if (elements.size == 0) {
@@ -44,26 +45,26 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
     msgURL = msgsURL.split("thread")(0)
     val URL: String = msgURL + element.attr("href")
     val container: DocumentContainer = documentDownloader.download(URL)
-    val document: Document = container.getDoc
-    messageContainer.setDate(container.getDoc.select(".date").select(".right").text)
-    messageContainer.setSubject(document.select(".subject").select(".right").text)
-    messageContainer.setBody(document.select("pre").text)
+    val document: Document = container.doc
+    messageContainer.date=container.doc.select(".date").select(".right").text
+    messageContainer.subject=document.select(".subject").select(".right").text
+    messageContainer.body=document.select("pre").text
     messageContainer
   }
 
   @throws[BusinesssException]
   def extractElementsFromDoc(docCon: DocumentContainer): Elements = {
     val messageContainers: Array[MessageContainer] = null
-    val doc: Document = docCon.getDoc
+    val doc: Document = docCon.doc
     val elements: Elements = doc.select("a[href*=@]")
     elements
   }
 
   @throws[BusinesssException]
   def writeMsgToFile(messageContainer: MessageContainer) {
-    var fileName: String = messageContainer.getSubject + ":::" + messageContainer.getDate
-    fileName = filePath + "/" + EncodingHelper.encodeFileName(fileName, encoding)
-    FileIOHelper.writeFileToDisk(fileName, messageContainer.getBody)
+    var fileName: String = messageContainer.subject + ":::" + messageContainer.date
+    fileName = filePath + "/" + CustomEncodingHelper.encodeFileName(fileName, encoding)
+    FileIOHelper.writeFileToDisk(fileName, messageContainer.body)
   }
 
   @throws[BusinesssException]

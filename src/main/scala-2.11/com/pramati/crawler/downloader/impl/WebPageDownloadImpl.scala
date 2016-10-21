@@ -4,6 +4,7 @@ import java.io.IOException
 
 import com.pramati.crawler.downloader.api.DocumentDownloader
 import com.pramati.crawler.exceptions.BusinesssException
+import com.pramati.crawler.model.DocumentContainer
 import org.apache.log4j.Logger
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -33,7 +34,7 @@ class WebPageDownloadImpl extends DocumentDownloader{
       logger.error("max attepts count reached from URL: " + source + " count: " + attpempt)
       throw new BusinesssException("Exception occured while downloading document form web URL " + source)
     }
-    container.setDoc(doc)
+    container.doc=doc
     container
   }
 }

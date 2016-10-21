@@ -6,8 +6,8 @@ import java.net.URLEncoder
 import com.pramati.crawler.exceptions.BusinesssException
 import org.apache.log4j.Logger
 
-object EncodingHelper {
-  private val logger: Logger = Logger.getLogger(classOf[EncodingHelper])
+object CustomEncodingHelper {
+  private val logger: Logger = Logger.getLogger(CustomEncodingHelper.getClass)
 
   @throws[BusinesssException]
   def encodeFileName(fileName: String, encoding: String): String = {

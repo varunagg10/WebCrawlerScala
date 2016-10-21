@@ -6,7 +6,7 @@ import com.pramati.crawler.exceptions.BusinesssException
 import org.apache.log4j.Logger
 
 object FileIOHelper {
-  private val logger: Logger = Logger.getLogger(classOf[FileIOHelper])
+  private val logger: Logger = Logger.getLogger(FileIOHelper.getClass)
 
   @throws[BusinesssException]
   def writeFileToDisk(fileName: String, data: String):Unit= {

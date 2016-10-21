@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct
 import com.pramati.crawler.downloader.api.DocumentDownloader
 import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
 import com.pramati.crawler.exceptions.BusinesssException
+import com.pramati.crawler.model.DocumentContainer
 import com.pramati.crawler.service.HandleCrawlApi
 import com.pramati.crawler.service.facade.HandleCrawlFacade
 import com.pramati.crawler.service.facade.impl.HandleCrawlFacadeImpl
@@ -59,7 +60,7 @@ class HandleCrawlImpl extends HandleCrawlApi{
 
   @throws[BusinesssException]
   private def parseIfNextPageExists(doc: DocumentContainer) {
-    val nextUrlElement: Elements = doc.getDoc.select("a[href]:contains(Next)")
+    val nextUrlElement: Elements = doc.doc.select("a[href]:contains(Next)")
     var nextPageUrl: String = baseURL
     if (!nextUrlElement.isEmpty) {
       nextPageUrl += nextUrlElement.first.attr("href")

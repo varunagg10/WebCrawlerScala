@@ -3,6 +3,7 @@ package com.pramati.crawler.service.facade
 import java.util.Date
 
 import com.pramati.crawler.exceptions.BusinesssException
+import com.pramati.crawler.model.{DocumentContainer, MessageContainer}
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
