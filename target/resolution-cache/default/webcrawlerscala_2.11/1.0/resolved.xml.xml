@@ -4,7 +4,7 @@
 		module="webcrawlerscala_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20161017140212"
+		publication="20161021144851"
 	>
 		<description>
 		WebCrawlerScala
@@ -34,5 +34,7 @@
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.11.8" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.11.8" conf="scala-tool->default,optional(default);compile->default(compile)"/>
+		<dependency org="org.skife.com.typesafe.config" name="typesafe-config" rev="0.3.0" conf="compile->default(compile)"/>
+		<dependency org="joda-time" name="joda-time" rev="2.9.4" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
