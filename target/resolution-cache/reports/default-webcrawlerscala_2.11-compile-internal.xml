@@ -7,15 +7,15 @@
 		revision="1.0"
 		conf="compile-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20161021144851"/>
+		date="20161024151533"/>
 	<dependencies>
 		<module organisation="joda-time" name="joda-time">
-			<revision name="2.9.4" status="release" pubdate="20160527145535" resolver="jcenter" artresolver="jcenter" homepage="http://www.joda.org/joda-time/" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="2">
+			<revision name="2.9.4" status="release" pubdate="20160527145535" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.joda.org/joda-time/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="2">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="successful" details="" size="30145" time="1811" location="/home/varuna/.ivy2/cache/joda-time/joda-time/ivy-2.9.4.xml" searched="true" original-local-location="/home/varuna/.ivy2/cache/joda-time/joda-time/ivy-2.9.4.xml.original" origin-is-local="false" origin-location="https://jcenter.bintray.com/joda-time/joda-time/2.9.4/joda-time-2.9.4.pom"/>
+				<metadata-artifact status="no" details="" size="6469" time="0" location="/home/varuna/.ivy2/cache/joda-time/joda-time/ivy-2.9.4.xml" searched="false" origin-is-local="false" origin-location="https://jcenter.bintray.com/joda-time/joda-time/2.9.4/joda-time-2.9.4.pom"/>
 				<caller organisation="default" name="webcrawlerscala_2.11" conf="compile-internal, compile, provided, optional" rev="2.9.4" rev-constraint-default="2.9.4" rev-constraint-dynamic="2.9.4" callerrev="1.0"/>
 				<artifacts>
-					<artifact name="joda-time" type="jar" ext="jar" status="successful" details="" size="629506" time="2999" location="/home/varuna/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.9.4.jar">
+					<artifact name="joda-time" type="jar" ext="jar" status="no" details="" size="629506" time="0" location="/home/varuna/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.9.4.jar">
 						<origin-location is-local="false" location="https://jcenter.bintray.com/joda-time/joda-time/2.9.4/joda-time-2.9.4.jar"/>
 					</artifact>
 				</artifacts>
@@ -42,6 +42,13 @@
 					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5744974" time="0" location="/home/varuna/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.8.jar">
 						<origin-location is-local="false" location="https://jcenter.bintray.com/org/scala-lang/scala-library/2.11.8/scala-library-2.11.8.jar"/>
 					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.akka" name="akka-actor_2.11">
+			<revision name="2.1.1" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="default" name="webcrawlerscala_2.11" conf="compile-internal, compile, provided, optional" rev="2.1.1" rev-constraint-default="2.1.1" rev-constraint-dynamic="2.1.1" callerrev="1.0"/>
+				<artifacts>
 				</artifacts>
 			</revision>
 		</module>

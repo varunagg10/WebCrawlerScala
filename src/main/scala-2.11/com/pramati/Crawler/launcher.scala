@@ -1,10 +1,12 @@
 package com.pramati.Crawler
 
-import java.io.FileInputStream
+import com.pramati.crawler.service.HandleCrawlApi
+import com.pramati.crawler.service.impl.HandleCrawlImpl
 
 object launcher {
 
   def main(args: Array[String]): Unit = {
-    throw new Exception()
+    val hanleCrawl:HandleCrawlApi = new HandleCrawlImpl
+    hanleCrawl.parseDocument()
   }
 }

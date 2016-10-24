@@ -27,5 +27,8 @@
     <orderEntry type="library" name="SBT: org.skife.com.typesafe.config:typesafe-config:0.3.0:jar" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Maven: com.typesafe.akka:akka-actor_2.10:2.2-M3" level="project" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.10.1" level="project" />
+    <orderEntry type="library" name="Maven: com.typesafe:config:1.0.0" level="project" />
   </component>
 </module>

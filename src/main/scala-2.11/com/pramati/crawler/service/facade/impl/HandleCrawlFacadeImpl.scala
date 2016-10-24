@@ -10,7 +10,6 @@ import com.pramati.crawler.exceptions.BusinesssException
 import com.pramati.crawler.model.{DocumentContainer, MessageContainer}
 import com.pramati.crawler.service.facade.HandleCrawlFacade
 import com.pramati.crawler.utils.{CustomEncodingHelper, FileIOHelper, UserInputHelper}
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper
 import org.apache.log4j.Logger
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
@@ -69,15 +68,14 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
 
   @throws[BusinesssException]
   def getDateFromUser: Date = {
-    System.out.println("Please enter the month and year in mm/yyyy format between 1900 to 2199")
-    var input: String = UserInputHelper.inputFromConsole
+    var input: String = ""
     var attempt: Int = 0
 
     do{
       System.out.println("Please enter the month and year in mm/yyyy format between 1900 to 2199")
       input = UserInputHelper.inputFromConsole
       attempt += 1
-    }while (attempt < maxAttempts && validateInput(input))
+    }while (attempt < maxAttempts && !validateInput(input))
 
     if (attempt == maxAttempts) {
       logger.error("User attempts exceeded max attempts,exiting")
