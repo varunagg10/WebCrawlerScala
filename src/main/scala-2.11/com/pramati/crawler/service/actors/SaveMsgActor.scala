@@ -1,9 +1,10 @@
 package com.pramati.crawler.service.actors
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
-import akka.actor.Actor.Receive
 import akka.routing.RoundRobinRouter
 import com.pramati.crawler.model.MessageContainer
+import com.pramati.crawler.service.actors.DownloadMsgActor.DownloadMsg
+import com.pramati.crawler.service.actors.SaveMsgActor.SaveMsg
 import com.pramati.crawler.service.facade.HandleCrawlFacade
 import com.pramati.crawler.service.facade.impl.HandleCrawlFacadeImpl
 
@@ -13,15 +14,32 @@ class SaveMsgActor extends Actor{
 
 
   override def receive: Receive = {
-    case SaveMsgActor.SaveMsg(msg) =>
-      handleCrawlFacade.writeMsgToFile(msg)
+    case message:SaveMsgActor.SaveMsg =>
+      handleCrawlFacade.writeMsgToFile(message.getMessage())
+
+//      val m = message.m
+//      m match {
+//        case SaveMsg(m) =>
+//        case DownloadMsg(element, url, actorRef, m) =>
+//        case _ =>
+//      }
   }
 }
 
 object SaveMsgActor{
   val threads:Int = 10
 
-  case class SaveMsg(msg:MessageContainer)
+  case class SaveMsg(m:Option[NextMessage]) extends NextMessage {
+    var msg:MessageContainer = _
+
+    override def setMessage(x: Any): Unit = {
+      msg=x.asInstanceOf[MessageContainer]
+    }
+
+    override def getMessage(): MessageContainer = {
+      msg
+    }
+  }
 
   def createSaveMsgActorPool(system:ActorSystem): ActorRef ={
     system.actorOf(Props[SaveMsgActor].withRouter(RoundRobinRouter(threads)), name = "SaveMsgActor")

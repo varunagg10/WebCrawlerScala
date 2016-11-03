@@ -25,17 +25,9 @@ class HandleCrawlImpl extends HandleCrawlApi{
   private val documentDownloader: DocumentDownloader = new WebPageDownloadImpl
   private val handleCrawlFacade: HandleCrawlFacade = new HandleCrawlFacadeImpl
   private val logger: Logger = Logger.getLogger(classOf[HandleCrawlImpl])
-
-
-  //private var es: ExecutorService = null
   private val system = ActorSystem("saveAndDownload")
   private val saveRef = SaveMsgActor.createSaveMsgActorPool(system)
-  private val downloadRef = DownloadMsgActor.createDownloadMsgActor(system,saveRef)
-
-
-//  @PostConstruct private def initExecuters() {
-//    es = Executors.newFixedThreadPool(threadPoolSize)
-//  }
+  private val downloadRef = DownloadMsgActor.createDownloadMsgActor(system)
 
   @throws[BusinesssException]
   def parseDocument() {
@@ -62,10 +54,9 @@ class HandleCrawlImpl extends HandleCrawlApi{
     val elements: Elements = handleCrawlFacade.extractElementsFromDoc(doc)
 
     val l = elements.toArray()
-    for (e <- l) {
-      downloadRef ! new DownloadMsgActor.DownloadMsg(e.asInstanceOf[Element],msgURL,saveRef)
-      //es.submit(new DownloadAndSaveMsgJob(msgURL, e, handleCrawlFacade))
-    }
+    for (e <- l)
+      downloadRef ! new DownloadMsgActor.DownloadMsg(e.asInstanceOf[Element],msgURL,saveRef,new SaveMsgActor.SaveMsg(None))
+
     parseIfNextPageExists(doc)
   }
 

@@ -12,18 +12,31 @@ class DownloadMsgActor()  extends Actor{
   val handleCrawlFacade: HandleCrawlFacade = new HandleCrawlFacadeImpl
 
   override def receive: Receive = {
-    case DownloadMsgActor.DownloadMsg(e,s,actorRef) =>
-      var messageContainer:MessageContainer  = handleCrawlFacade.extractMessagesFromDoc(s,e)
-      actorRef ! new SaveMsgActor.SaveMsg(messageContainer)
+    case DownloadMsgActor.DownloadMsg(e,s,actorRef,m) => {
+
+      val messageContainer:MessageContainer  = handleCrawlFacade.extractMessagesFromDoc(s,e)
+      m.setMessage(messageContainer)
+
+      actorRef ! m
+    }
+
   }
 }
 
 object DownloadMsgActor{
   val threads:Int = 100
 
-  case class DownloadMsg(element: Element,url: String,actorRef: ActorRef)
+  case class DownloadMsg(element: Element,url: String,actorRef:ActorRef,m:NextMessage) extends NextMessage {
+    override def setMessage(x: Any): Unit = {
 
-  def createDownloadMsgActor(system:ActorSystem,actorRef: ActorRef): ActorRef ={
+    }
+
+    override def getMessage(): Any = {
+      None
+    }
+  }
+
+  def createDownloadMsgActor(system:ActorSystem): ActorRef ={
     system.actorOf(Props[DownloadMsgActor].withRouter(RoundRobinRouter(threads)), name = "DownloadMsgActor")
   }
 }
