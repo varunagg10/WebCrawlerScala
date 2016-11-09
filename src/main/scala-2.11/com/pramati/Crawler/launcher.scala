@@ -1,12 +1,29 @@
 package com.pramati.Crawler
 
-import com.pramati.crawler.service.HandleCrawlApi
+import com.pramati.crawler.downloader.api.DocumentDownloaderComponent
+import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
+import com.pramati.crawler.service.facade.HandleCrawlFacadeComponent
+import com.pramati.crawler.service.facade.impl.HandleCrawlFacadeImpl
 import com.pramati.crawler.service.impl.HandleCrawlImpl
+import com.pramati.crawler.service.{HandleCrawlApi, HandleCrawlComponent}
 
-object launcher {
+object Launcher extends HandleCrawlComponent{
 
   def main(args: Array[String]): Unit = {
-    val hanleCrawl:HandleCrawlApi = new HandleCrawlImpl
-    hanleCrawl.parseDocument()
+    handle.parseDocument()
   }
+
+  override val handle: HandleCrawlApi = new HandleCrawlImpl with DefaultHandleCrawlFacadeComponent
+}
+
+trait DefaultHandleCrawlFacadeComponent extends HandleCrawlFacadeComponent with DocumentDownloaderComponent{
+
+  val handleCrawlFacade = new HandleCrawlFacadeImpl
+  val documentDownloader = new WebPageDownloadImpl
+}
+
+trait XHandleCrawlFacadeComponent extends HandleCrawlFacadeComponent with DocumentDownloaderComponent{
+
+  val handleCrawlFacade = new HandleCrawlFacadeImpl
+  val documentDownloader = new WebPageDownloadImpl
 }

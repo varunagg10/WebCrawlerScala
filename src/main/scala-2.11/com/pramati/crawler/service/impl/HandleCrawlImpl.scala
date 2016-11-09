@@ -5,13 +5,13 @@ import java.util.concurrent.{ExecutorService, Executors}
 import javax.annotation.PostConstruct
 
 import akka.actor.ActorSystem
-import com.pramati.crawler.downloader.api.DocumentDownloader
+import com.pramati.crawler.downloader.api.{DocumentDownloader, DocumentDownloaderComponent}
 import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
 import com.pramati.crawler.exceptions.BusinesssException
 import com.pramati.crawler.model.DocumentContainer
 import com.pramati.crawler.service.HandleCrawlApi
 import com.pramati.crawler.service.actors.{DownloadMsgActor, SaveMsgActor}
-import com.pramati.crawler.service.facade.HandleCrawlFacade
+import com.pramati.crawler.service.facade.{HandleCrawlFacade, HandleCrawlFacadeComponent}
 import com.pramati.crawler.service.facade.impl.HandleCrawlFacadeImpl
 import org.apache.log4j.Logger
 import org.jsoup.nodes.Element
@@ -19,11 +19,13 @@ import org.jsoup.select.Elements
 
 
 class HandleCrawlImpl extends HandleCrawlApi{
+  this:DocumentDownloaderComponent with HandleCrawlFacadeComponent =>
+
   private val baseURL: String = "http://mail-archives.apache.org"
   private val URL: String = "mod_mbox/maven-users/"
   private val threadPoolSize: Int = 100
-  private val documentDownloader: DocumentDownloader = new WebPageDownloadImpl
-  private val handleCrawlFacade: HandleCrawlFacade = new HandleCrawlFacadeImpl
+//  val documentDownloader: DocumentDownloader
+//  val handleCrawlFacade: HandleCrawlFacade
   private val logger: Logger = Logger.getLogger(classOf[HandleCrawlImpl])
   private val system = ActorSystem("saveAndDownload")
   private val saveRef = SaveMsgActor.createSaveMsgActorPool(system)
