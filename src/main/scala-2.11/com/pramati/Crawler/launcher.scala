@@ -21,9 +21,3 @@ trait DefaultHandleCrawlFacadeComponent extends HandleCrawlFacadeComponent with 
   val handleCrawlFacade = new HandleCrawlFacadeImpl
   val documentDownloader = new WebPageDownloadImpl
 }
-
-trait XHandleCrawlFacadeComponent extends HandleCrawlFacadeComponent with DocumentDownloaderComponent{
-
-  val handleCrawlFacade = new HandleCrawlFacadeImpl
-  val documentDownloader = new WebPageDownloadImpl
-}
