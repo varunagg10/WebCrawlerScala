@@ -1,12 +1,11 @@
 package com.pramati.crawler.service.facade.impl
 
-import java.text.{DateFormat, ParseException, SimpleDateFormat}
+import java.text.{DateFormat, SimpleDateFormat}
 import java.util.Date
 import java.util.regex.{Matcher, Pattern}
 
 import com.pramati.crawler.downloader.api.DocumentDownloader
 import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
-import com.pramati.crawler.exceptions.BusinesssException
 import com.pramati.crawler.model.{DocumentContainer, MessageContainer}
 import com.pramati.crawler.service.facade.HandleCrawlFacade
 import com.pramati.crawler.utils.{CustomEncodingHelper, FileIOHelper, UserInputHelper}
@@ -23,7 +22,6 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
   private val documentDownloader: DocumentDownloader = new WebPageDownloadImpl
   private val pattern: String = "^([1-9]|0[1-9]|1[0-2])/(19|2[0-1])\\d{2}$"
 
-  @throws[BusinesssException]
   def parseMessagesLinkForDateFromDoc(date: Date, docCont: DocumentContainer): String = {
     val doc: Document = docCont.doc
     val dt: String = sdf.format(date)
@@ -31,18 +29,17 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
     if (elements.size == 0) {
       logger.error("No records found for entered date :" + dt)
       System.out.println("No records found for entered date :" + dt)
-      throw new BusinesssException("No records found for entered date :" + dt)
+      throw new RuntimeException("No records found for entered date :" + dt)
     }
     val nextUrl: String = elements.parents.first.select("a[href]").first.attr("href")
     nextUrl
   }
 
-  @throws[BusinesssException]
   def extractMessagesFromDoc(msgsURL: String, element: Element): MessageContainer = {
     val messageContainer: MessageContainer = new MessageContainer
-    var msgURL: String = null
-    msgURL = msgsURL.split("thread")(0)
-    val URL: String = msgURL + element.attr("href")
+    //var msgURL: String = null
+    //msgURL = msgsURL.split("thread")(0)
+    val URL: String = msgsURL.split("thread")(0) + element.attr("href")
     val container: DocumentContainer = documentDownloader.download(URL)
     val document: Document = container.doc
     messageContainer.date=container.doc.select(".date").select(".right").text
@@ -51,7 +48,6 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
     messageContainer
   }
 
-  @throws[BusinesssException]
   def extractElementsFromDoc(docCon: DocumentContainer): Elements = {
     val messageContainers: Array[MessageContainer] = null
     val doc: Document = docCon.doc
@@ -59,15 +55,13 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
     elements
   }
 
-  @throws[BusinesssException]
   def writeMsgToFile(messageContainer: MessageContainer) {
     var fileName: String = messageContainer.subject + ":::" + messageContainer.date
     fileName = filePath + "/" + CustomEncodingHelper.encodeFileName(fileName, encoding)
     FileIOHelper.writeFileToDisk(fileName, messageContainer.body)
   }
 
-  @throws[BusinesssException]
-  def getDateFromUser: Date = {
+  def getDateFromUser: Option[Date] = {
     var input: String = ""
     var attempt: Int = 0
 
@@ -78,25 +72,14 @@ class HandleCrawlFacadeImpl extends HandleCrawlFacade{
     }while (attempt < maxAttempts && !validateInput(input))
 
     if (attempt == maxAttempts) {
-      logger.error("User attempts exceeded max attempts,exiting")
-      throw new BusinesssException("User attempts exceeded max attempts,exiting")
+      return None
     }
-    parseStringToDate(input)
+    Option(parseStringToDate(input))
   }
 
-  @throws[BusinesssException]
   def parseStringToDate(inputDate: String): Date = {
     val sourceFormat: DateFormat = new SimpleDateFormat("MM/yyyy")
-    var date: Date = null
-    try
-      date = sourceFormat.parse(inputDate)
-
-    catch {
-      case e: ParseException => {
-        logger.error(e)
-        throw new BusinesssException("Exception occured while parsing date " + inputDate, e)
-      }
-    }
+    val date = sourceFormat.parse(inputDate)
     date
   }
 
