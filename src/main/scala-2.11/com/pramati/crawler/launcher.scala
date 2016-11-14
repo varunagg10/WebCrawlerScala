@@ -1,4 +1,4 @@
-package com.pramati.Crawler
+package com.pramati.crawler
 
 import com.pramati.crawler.downloader.api.DocumentDownloaderComponent
 import com.pramati.crawler.downloader.impl.WebPageDownloadImpl
